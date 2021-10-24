@@ -9,12 +9,17 @@ namespace OzonEdu.MerchApi.Services
     {
         public Task<MerchItem> RequestMerch(long id, CancellationToken token)
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
+
+            return Task.FromResult(new MerchItem(id, "NewMerch"));
         }
 
         public Task<MerchIssueInfo> GetMerchIssuesInfo(MerchIssueModel merchIssueModel, CancellationToken token)
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
+            
+            return Task.FromResult(new MerchIssueInfo(22, $"This Merch {merchIssueModel.MerchName}"));
+
         }
     }
 }

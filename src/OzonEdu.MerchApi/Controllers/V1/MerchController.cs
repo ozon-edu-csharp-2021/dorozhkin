@@ -28,7 +28,7 @@ namespace OzonEdu.MerchApi.Controllers.V1
 
             var merchItemResponse = new MerchItemResponse
             {
-                Id = id
+                MerchName = merchItem.MerchName,
             };
 
             return Ok(merchItemResponse);

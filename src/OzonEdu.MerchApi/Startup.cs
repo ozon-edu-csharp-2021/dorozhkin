@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using OzonEdu.MerchApi.Services;
 using OzonEdu.MerchApi.Services.Interfaces;
@@ -11,7 +10,6 @@ namespace OzonEdu.MerchApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddSingleton<IMerchService, MerchService>();
         }
 
