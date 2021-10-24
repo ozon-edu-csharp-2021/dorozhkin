@@ -11,6 +11,7 @@ namespace OzonEdu.MerchApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddSingleton<IMerchService, MerchService>();
         }
 
@@ -18,7 +19,10 @@ namespace OzonEdu.MerchApi
         {
             app.UseRouting();
 
-            app.UseEndpoints(endpoints => { });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

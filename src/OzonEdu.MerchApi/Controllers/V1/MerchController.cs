@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OzonEdu.MerchApi.HttpModels;
 using OzonEdu.MerchApi.Models;
 using OzonEdu.MerchApi.Services.Interfaces;
 
@@ -17,26 +18,41 @@ namespace OzonEdu.MerchApi.Controllers.V1
             _merchService = merchService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<MerchItem>> RequestMerch(CancellationToken token)
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<MerchItemResponse>> RequestMerch(long id, CancellationToken token)
         {
-            var merch = await _merchService.RequestMerch(token);
+            var merchItem = await _merchService.RequestMerch(id, token);
 
-            if (merch is null)
+            if (merchItem is null)
                 return NotFound();
-            
-            return Ok(merch);
+
+            var merchItemResponse = new MerchItemResponse
+            {
+                Id = id
+            };
+
+            return Ok(merchItemResponse);
         }
         
-        [HttpGet]
-        public async Task<ActionResult<MerchIssuesInfo>> GetMerchIssuesInfo(CancellationToken token)
+        [HttpPost]
+        public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchIssueInfo(MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
         {
-            var merchIssuesInfo = await _merchService.GetMerchIssuesInfo(token);
+            var merchIssuesInfo = await _merchService.GetMerchIssuesInfo(new MerchIssueModel
+            {
+                MerchName = merchIssuePostViewModel.MerchName,
+                DateIssue = merchIssuePostViewModel.DateIssue
+            }, token);
             
             if (merchIssuesInfo is null)
                 return NotFound();
+
+            var merchIssueInfoResponse = new MerchIssueInfoResponse
+            {
+                MerchName = merchIssuesInfo.MerchName,
+                Quantity = merchIssuesInfo.Quantity
+            };
             
-            return Ok(merchIssuesInfo);
+            return Ok(merchIssueInfoResponse);
         }
     }
 }

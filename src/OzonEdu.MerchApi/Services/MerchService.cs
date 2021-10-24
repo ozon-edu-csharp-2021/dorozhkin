@@ -7,12 +7,12 @@ namespace OzonEdu.MerchApi.Services
 {
     public class MerchService : IMerchService
     {
-        public Task<MerchItem> RequestMerch(CancellationToken token)
+        public Task<MerchItem> RequestMerch(long id, CancellationToken token)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<MerchIssuesInfo> GetMerchIssuesInfo(CancellationToken token)
+        public Task<MerchIssueInfo> GetMerchIssuesInfo(MerchIssueModel merchIssueModel, CancellationToken token)
         {
             throw new System.NotImplementedException();
         }

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi", "src\Ozo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.HttpModels", "src\OzonEdu.MerchApi.HttpModels\OzonEdu.MerchApi.HttpModels.csproj", "{377B5DFC-1766-46E3-817C-6391737766B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.HttpClients", "src\OzonEdu.MerchApi.HttpClients\OzonEdu.MerchApi.HttpClients.csproj", "{AE9CE383-4BBB-4529-A9BE-993091699C18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5F6E9393-8B84-4604-98A2-E875F81BBC1A} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
 		{377B5DFC-1766-46E3-817C-6391737766B5} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
+		{AE9CE383-4BBB-4529-A9BE-993091699C18} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5F6E9393-8B84-4604-98A2-E875F81BBC1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -39,5 +42,9 @@ Global
 		{377B5DFC-1766-46E3-817C-6391737766B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{377B5DFC-1766-46E3-817C-6391737766B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{377B5DFC-1766-46E3-817C-6391737766B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE9CE383-4BBB-4529-A9BE-993091699C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9CE383-4BBB-4529-A9BE-993091699C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9CE383-4BBB-4529-A9BE-993091699C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9CE383-4BBB-4529-A9BE-993091699C18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
