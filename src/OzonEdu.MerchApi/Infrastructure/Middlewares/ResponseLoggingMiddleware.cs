@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace OzonEdu.MerchApi.Infrastructure.Middlewares
 {
-    public class RequestLoggingMiddleware
+    public class ResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<RequestLoggingMiddleware> _logger;
+        private readonly ILogger<ResponseLoggingMiddleware> _logger;
 
-        public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+        public ResponseLoggingMiddleware(RequestDelegate next, ILogger<ResponseLoggingMiddleware> logger)
         {
             _next = next;
             _logger = logger;
@@ -18,25 +18,25 @@ namespace OzonEdu.MerchApi.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            await LogRequest(context);
             await _next(context);
+            await LogResponse(context);
         }
 
-        private async Task LogRequest(HttpContext context)
+        private async Task LogResponse(HttpContext context)
         {
             try
             {
+                var headers = context.Response.Headers;
                 var route = context.Request.Path;
-                var headers = context.Request.Headers;
                 var headersAsText = "";
-
-                _logger.LogInformation("Request logged");
-
+                
+                _logger.LogInformation("Response logged");
+                
                 foreach (var header in headers) 
                     headersAsText += $"{header.Key} : {header.Value}\n";
-
+                
                 _logger.LogInformation($"Headers:\n{headersAsText}");
-                _logger.LogInformation($"Route:\n{route}");
+                _logger.LogInformation($"Request route:\n{route}");
             }
             catch (Exception e)
             {

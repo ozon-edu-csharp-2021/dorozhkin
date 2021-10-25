@@ -13,6 +13,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
+                services.AddSingleton<IStartupFilter, LoggingStartupFilter>();
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
                 
