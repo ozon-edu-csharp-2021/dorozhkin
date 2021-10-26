@@ -6,13 +6,9 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service MerchApiGrpc {
-  rpc RequestMerch (MerchRequest) returns (MerchResponse);
-}
-
-message MerchRequest {
-  
+  rpc RequestMerch (google.protobuf.Int64Value) returns (MerchResponse);
 }
 
 message MerchResponse {
-  
+  string merch_name = 1;
 }

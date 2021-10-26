@@ -15,6 +15,7 @@ namespace OzonEdu.MerchApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .AddInfrastructure()
-                .AddHttp();
+                .AddHttp()
+                .AddGrpc();
     }
 }

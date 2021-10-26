@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Services;
 using OzonEdu.MerchApi.Services.Interfaces;
 
@@ -19,6 +20,7 @@ namespace OzonEdu.MerchApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<MerchApiGrpcService>();
                 endpoints.MapControllers();
             });
         }

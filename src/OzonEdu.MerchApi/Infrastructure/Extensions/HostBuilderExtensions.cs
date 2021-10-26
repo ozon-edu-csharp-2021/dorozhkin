@@ -35,5 +35,16 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
             
             return builder;
         }
+        
+        public static IHostBuilder AddGrpc(this IHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
+            {
+                services.AddGrpc();
+                // services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+            });
+            
+            return builder;
+        }
     }
 }
