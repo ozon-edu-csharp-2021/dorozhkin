@@ -7,8 +7,20 @@ import "google/protobuf/wrappers.proto";
 
 service MerchApiGrpc {
   rpc RequestMerch (google.protobuf.Int64Value) returns (MerchResponse);
+  rpc GetMerchIssuesInfo(MerchIssueRequest) returns (MerchIssueInfoResponse);
 }
 
 message MerchResponse {
   string merch_name = 1;
 }
+
+message MerchIssueRequest {
+  string merch_name = 1;
+  string employee_name = 2;
+}
+
+message MerchIssueInfoResponse {
+  string merch_name = 1;
+  int32 quantity = 2;
+}
+

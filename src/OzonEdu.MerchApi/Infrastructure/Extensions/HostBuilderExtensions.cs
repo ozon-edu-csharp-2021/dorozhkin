@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OzonEdu.MerchApi.Infrastructure.Filters;
+using OzonEdu.MerchApi.Infrastructure.Interceptors;
 using OzonEdu.MerchApi.Infrastructure.StartupFilters;
 
 namespace OzonEdu.MerchApi.Infrastructure.Extensions
@@ -40,8 +41,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
-                services.AddGrpc();
-                // services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+                services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
             });
             
             return builder;

@@ -2,6 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using OzonEdu.MerchApi.Grpc;
+using OzonEdu.MerchApi.Models;
 using OzonEdu.MerchApi.Services.Interfaces;
 
 namespace OzonEdu.MerchApi.GrpcServices
@@ -22,6 +23,19 @@ namespace OzonEdu.MerchApi.GrpcServices
             return new MerchResponse
             {
                 MerchName = merchItem.MerchName
+            };
+        }
+
+        public override async Task<MerchIssueInfoResponse> GetMerchIssuesInfo(MerchIssueRequest request, ServerCallContext context)
+        {
+            var merchIssueModel = new MerchIssueModel(request.MerchName, request.EmployeeName);
+
+            var merchIssueInfo = await _merchService.GetMerchIssuesInfo(merchIssueModel, context.CancellationToken);
+
+            return new MerchIssueInfoResponse
+            {
+                MerchName = merchIssueInfo.MerchName,
+                Quantity = merchIssueInfo.Quantity
             };
         }
     }

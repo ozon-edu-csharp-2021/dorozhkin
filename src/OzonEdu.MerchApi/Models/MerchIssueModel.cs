@@ -4,7 +4,13 @@ namespace OzonEdu.MerchApi.Models
 {
     public class MerchIssueModel
     {
-        public string MerchName { get; set; }
-        public DateTime DateIssue { get; set; }
+        public MerchIssueModel(string merchName, string employeeName)
+        {
+            MerchName = merchName;
+            EmployeeName = employeeName;
+        }
+
+        public string MerchName { get; }
+        public string EmployeeName { get; }
     }
 }

@@ -28,6 +28,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Middlewares
             {
                 var headers = context.Response.Headers;
                 var route = context.Request.Path;
+                
+                if (headers["Content-Type"] == "application/grpc")
+                    return;
+                
                 var headersAsText = "";
                 
                 _logger.LogInformation("Response logged");
@@ -40,7 +44,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Middlewares
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not log request body");
+                _logger.LogError(e, "Could not log response");
             }
         }
     }

@@ -33,16 +33,14 @@ namespace OzonEdu.MerchApi.Controllers.V1
 
             return Ok(merchItemResponse);
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchIssueInfo(MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
+        public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchIssueInfo(
+            MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
         {
             var merchIssuesInfo = await _merchService.GetMerchIssuesInfo(new MerchIssueModel
-            {
-                MerchName = merchIssuePostViewModel.MerchName,
-                DateIssue = merchIssuePostViewModel.DateIssue
-            }, token);
-            
+            (merchIssuePostViewModel.MerchName, merchIssuePostViewModel.EmployeeName), token);
+
             if (merchIssuesInfo is null)
                 return NotFound();
 
@@ -51,7 +49,7 @@ namespace OzonEdu.MerchApi.Controllers.V1
                 MerchName = merchIssuesInfo.MerchName,
                 Quantity = merchIssuesInfo.Quantity
             };
-            
+
             return Ok(merchIssueInfoResponse);
         }
     }
