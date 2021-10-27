@@ -11,18 +11,16 @@ namespace OzonEdu.MerchApi.GrpcClient
     {
         static async Task Main(string[] args)
         {
-            using var channel = GrpcChannel.ForAddress("http://localhost:5001");
+            using var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client = new MerchApiGrpc.MerchApiGrpcClient(channel);
 
-            // var response = await client.RequestMerchAsync(new Int64Value{Value = 228}, cancellationToken: CancellationToken.None);
+            var responseMerch = await client.RequestMerchAsync(new Int64Value{Value = 43}, cancellationToken: CancellationToken.None);
             
-            var response = await client.GetMerchIssuesInfoAsync(new MerchIssueRequest
+            var responseMerchIssueInfo = await client.GetMerchIssuesInfoAsync(new MerchIssueRequest
             {
                 MerchName = "T-shirt",
                 EmployeeName = "Ivan"
             }, cancellationToken: CancellationToken.None);
-            
-            Console.WriteLine(response.MerchName);
         }
     }
 }

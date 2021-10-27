@@ -20,6 +20,7 @@ namespace OzonEdu.MerchApi.HttpClients
                 MerchName = "Tshirt",
                 EmployeeName = "Ivan"
             }, CancellationToken.None);
+            ;
         }
     }
 }
