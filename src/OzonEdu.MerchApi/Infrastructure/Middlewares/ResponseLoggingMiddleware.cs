@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -19,10 +20,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Middlewares
         public async Task InvokeAsync(HttpContext context)
         {
             await _next(context);
-            await LogResponse(context);
+            await LogResponseAsync(context);
         }
 
-        private async Task LogResponse(HttpContext context)
+        private async Task LogResponseAsync(HttpContext context)
         {
             try
             {
@@ -32,12 +33,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Middlewares
                 if (headers["Content-Type"] == "application/grpc")
                     return;
                 
-                var headersAsText = "";
+                var headersStringBuilder = new StringBuilder();
                 
                 _logger.LogInformation("Response logged");
                 
                 foreach (var header in headers) 
-                    headersAsText += $"{header.Key} : {header.Value}\n";
+                    headersStringBuilder.Append($"{header.Key} : {header.Value}\n");
+
+                var headersAsText = headersStringBuilder.ToString();
                 
                 _logger.LogInformation($"Headers:\n{headersAsText}");
                 _logger.LogInformation($"Request route:\n{route}");

@@ -16,9 +16,9 @@ namespace OzonEdu.MerchApi.GrpcServices
             _merchService = merchService;
         }
 
-        public override async Task<MerchResponse> RequestMerch(Int64Value request, ServerCallContext context)
+        public override async Task<MerchResponse> RequestMerch(MerchRequest request, ServerCallContext context)
         {
-            var merchItem = await _merchService.RequestMerch(request.Value, context.CancellationToken);
+            var merchItem = await _merchService.RequestMerch(request.Id, context.CancellationToken);
 
             return new MerchResponse
             {

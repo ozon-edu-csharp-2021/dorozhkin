@@ -20,7 +20,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
                 
                 services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "OzonEdu.StockApi", Version = "v1"});
+                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "OzonEdu.MerchApi", Version = "v1"});
                     options.CustomSchemaIds(x => x.FullName);
                 });
             });
