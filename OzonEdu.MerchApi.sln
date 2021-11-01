@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Grpc", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.GrpcClient", "src\OzonEdu.MerchApi.GrpcClient\OzonEdu.MerchApi.GrpcClient.csproj", "{FDFB097D-0F16-4BA1-B40E-F90827CE30DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Domain", "src\OzonEdu.MerchApi.Domain\OzonEdu.MerchApi.Domain.csproj", "{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Domain.Tests", "tests\OzonEdu.MerchApi.Domain.Tests\OzonEdu.MerchApi.Domain.Tests.csproj", "{59C3E586-AB0C-4387-84AE-9B91FDD6F304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,8 @@ Global
 		{AE9CE383-4BBB-4529-A9BE-993091699C18} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
 		{93093446-E56C-4C88-A9F0-218251033DD7} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
 		{FDFB097D-0F16-4BA1-B40E-F90827CE30DF} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
+		{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92} = {56625525-35A2-4430-8352-3C6F8BCFDE06}
+		{59C3E586-AB0C-4387-84AE-9B91FDD6F304} = {22CF285E-6E3F-4341-8654-DFDF0481C969}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5F6E9393-8B84-4604-98A2-E875F81BBC1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +66,13 @@ Global
 		{FDFB097D-0F16-4BA1-B40E-F90827CE30DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDFB097D-0F16-4BA1-B40E-F90827CE30DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDFB097D-0F16-4BA1-B40E-F90827CE30DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10CE89DE-9DD6-4A4E-A8AC-7A89CD807F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59C3E586-AB0C-4387-84AE-9B91FDD6F304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C3E586-AB0C-4387-84AE-9B91FDD6F304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C3E586-AB0C-4387-84AE-9B91FDD6F304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C3E586-AB0C-4387-84AE-9B91FDD6F304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
