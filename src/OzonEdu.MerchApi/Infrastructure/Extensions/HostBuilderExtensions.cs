@@ -1,8 +1,10 @@
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OzonEdu.MerchApi.Infrastructure.Filters;
+using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Interceptors;
 using OzonEdu.MerchApi.Infrastructure.StartupFilters;
 
@@ -18,11 +20,15 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
                 
+                // services.AddScoped<IMerchPackRepository, MerchPackRepository>();
+                
                 services.AddSwaggerGen(options =>
                 {
                     options.SwaggerDoc("v1", new OpenApiInfo {Title = "OzonEdu.MerchApi", Version = "v1"});
                     options.CustomSchemaIds(x => x.FullName);
                 });
+
+                services.AddMediatR(typeof(RequestMerchCommandHandler).Assembly);
             });
             return builder;
         }

@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Events" />
+      <Folder Include="AggregationModels\MerchItemAggregate\Interfaces" />
     </ItemGroup>
 
 </Project>
