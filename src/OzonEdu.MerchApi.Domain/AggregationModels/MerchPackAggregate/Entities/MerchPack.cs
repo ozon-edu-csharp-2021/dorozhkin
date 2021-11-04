@@ -40,5 +40,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities
             //todo add event
             AddDomainEvent(saveMerchPackEvent);
         }
+
+        public MerchPack()
+        {
+        }
     }
 }

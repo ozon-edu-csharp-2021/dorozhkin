@@ -42,12 +42,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<MerchRequest> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default)
+        public async Task<List<MerchRequest>> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default)
         {
-            return _merchRequests.FirstOrDefault(x => x.EmployeeId == employeeId);
+            return _merchRequests.Where(merchRequest => merchRequest.EmployeeId == employeeId).ToList();
         }
 
-        public async Task<List<MerchRequest>> GetAllRequests(CancellationToken cancellationToken = default)
+        public async Task<List<MerchRequest>> GetAllRequestsAsync(CancellationToken cancellationToken = default)
         {
             return _merchRequests;
         }

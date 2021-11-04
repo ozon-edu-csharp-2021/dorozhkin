@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
@@ -25,8 +26,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
         public NamePack NamePack { get; }
         public long MerchPackId { get; }
         public long EmployeeId { get; }
-        public long SupplyCodeStatus { get; private set; }
-        public long ReserveCodeStatus { get; private set; }
+        public long? SupplyCodeStatus { get; private set; }
+        public long? ReserveCodeStatus { get; private set; }
+        public long? DeliveryCode { get; private set; }
 
         private void SetMerchRequestDraftStatus()
         {
@@ -35,6 +37,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
 
         public void SetInProcessStatus(long reserveCodeStatus) //todo not invariant
         {
+            if (reserveCodeStatus < 0)
+                throw new Exception("The code cannot be less than zero");
+
             Status = MerchRequestStatus.InProcess;
             ReserveCodeStatus = reserveCodeStatus;
             
@@ -43,8 +48,22 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
 
         public void SetWaitingSupplyStatus(long supplyCodeStatus)
         {
+            if (supplyCodeStatus < 0)
+                throw new Exception("The code cannot be less than zero");
+            
             Status = MerchRequestStatus.WaitingSupply;
             SupplyCodeStatus = supplyCodeStatus;
+            
+            SaveMerchRequest();
+        }
+        
+        public void SetClosedStatus(long deliveryCode)
+        {
+            if (deliveryCode < 0)
+                throw new Exception("The code cannot be less than zero");
+            
+            Status = MerchRequestStatus.Closed;
+            DeliveryCode = deliveryCode;
             
             SaveMerchRequest();
         }
@@ -52,8 +71,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
         private void SaveMerchRequest()
         {
             var saveMerchRequestEvent = new SaveMerchRequestEvent(this);
-            //todo add event
-            // AddDomainEvent(saveMerchRequestEvent);
+            AddDomainEvent(saveMerchRequestEvent);
         }
     }
 }

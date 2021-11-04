@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchApi.HttpModels;
-using OzonEdu.MerchApi.Infrastructure.Commands;
+using OzonEdu.MerchApi.Infrastructure.Commands.GetMerchRequestInfoCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
-using OzonEdu.MerchApi.Services.Interfaces;
 
 namespace OzonEdu.MerchApi.Controllers.V1
 {
@@ -13,16 +12,14 @@ namespace OzonEdu.MerchApi.Controllers.V1
     [Route("v1/api/merch")]
     public class MerchController : ControllerBase
     {
-        private readonly IMerchService _merchService;
         private readonly IMediator _mediator;
 
-        public MerchController(IMerchService merchService, IMediator mediator)
+        public MerchController(IMediator mediator)
         {
-            _merchService = merchService;
             _mediator = mediator;
         }
         
-        [HttpPost("request")]
+        [HttpPost("RequestMerch")]
         public async Task<ActionResult<RequestMerchResponse>> RequestMerch(
             RequestMerchPostViewModel requestMerch, CancellationToken token)
         {
@@ -42,60 +39,23 @@ namespace OzonEdu.MerchApi.Controllers.V1
             return Ok(requestMerchResponse);
         }
 
-        // [HttpGet("{id:long}")]
-        // public async Task<ActionResult<MerchItemResponse>> RequestMerch(long id, CancellationToken token)
-        // {
-        //     var merchItem = await _merchService.RequestMerch(id, token);
-        //
-        //     if (merchItem is null)
-        //         return NotFound();
-        //
-        //     var merchItemResponse = new MerchItemResponse
-        //     {
-        //         MerchName = merchItem.MerchName,
-        //     };
-        //
-        //     return Ok(merchItemResponse);
-        // }
+        [HttpPost("GetMerchIssueInfo")]
+        public async Task<ActionResult<MerchIssueInfoResponse>> RequestMerchIssueInfo(
+            MerchIssuePostViewModel merchIssue, CancellationToken token)
+        {
+            var getMerchRequestInfoCommand = new GetMerchRequestInfoCommand
+            {
+                EmployeeName = merchIssue.EmployeeName
+            };
 
-        // [HttpPost]
-        // public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchIssueInfo(
-        //     MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
-        // {
-        //     var merchIssuesInfo = await _merchService.GetMerchIssuesInfo(new MerchIssueModel
-        //         (merchIssuePostViewModel.MerchName, merchIssuePostViewModel.EmployeeName), token);
-        //
-        //     if (merchIssuesInfo is null)
-        //         return NotFound();
-        //
-        //     var merchIssueInfoResponse = new MerchIssueInfoResponse
-        //     {
-        //         MerchName = merchIssuesInfo.MerchName,
-        //         Quantity = merchIssuesInfo.Quantity
-        //     };
-        //
-        //     return Ok(merchIssueInfoResponse);
-        // }
-        //
-        
-        //
-        // [HttpPost]
-        // public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchPackInfo(
-        //     MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
-        // {
-        //     var getMerchPackInfoCommand = new GetMerchPackInfoCommand
-        //     {
-        //         Name = merchIssuePostViewModel.MerchName
-        //     };
-        //     
-        //     var result = await _mediator.Send(getMerchPackInfoCommand, token);
-        //
-        //     var merchIssueInfoResponse = new MerchIssueInfoResponse
-        //     {
-        //         MerchName = result.Name
-        //     };
-        //
-        //     return Ok(merchIssueInfoResponse);
-        // }
+            var response = await _mediator.Send(getMerchRequestInfoCommand, token);
+
+            var merchIssueInfoResponse = new MerchIssueInfoResponse
+            {
+                MerchPacks = response.MerchPacks
+            };
+
+            return Ok(merchIssueInfoResponse);
+        }
     }
 }

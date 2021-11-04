@@ -24,7 +24,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
         public async Task<Unit> Handle(MerchSupplyArrivedCommand request, CancellationToken cancellationToken)
         {
-            var allRequests = await _merchRequestRepository.GetAllRequests(cancellationToken);
+            var allRequests = await _merchRequestRepository.GetAllRequestsAsync(cancellationToken);
 
             var waitingSupplyRequests = allRequests
                 .Where(merchRequest => merchRequest.Status == MerchRequestStatus.WaitingSupply).ToList();

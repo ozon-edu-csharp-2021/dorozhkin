@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+
 namespace OzonEdu.MerchApi.HttpModels
 {
     public class MerchIssueInfoResponse
     {
-        public string MerchName { get; set; }
-        public int Quantity { get; set; }
+        public List<string> MerchPacks { get; set; }
     }
 }

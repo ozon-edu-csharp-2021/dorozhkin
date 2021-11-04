@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using OzonEdu.MerchApi.Infrastructure.Commands.CheckMerchInStockCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.CreateAvailabilityMerchInStockRequestCommand;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.StockRequestAggregate
