@@ -12,6 +12,13 @@ namespace OzonEdu.MerchApi.Domain.Models
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
+        //todo temp
+        public Entity ChangeId(int id)
+        {
+            Id = id;
+            return this;
+        }
+        
         public void AddDomainEvent(INotification eventItem)
         {
             _domainEvents ??= new List<INotification>();

@@ -1,4 +1,4 @@
-﻿namespace OzonEdu.MerchApi.Infrastructure.Commands
+﻿namespace OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand
 {
     public class RequestMerchCommandResponse
     {

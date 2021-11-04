@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchApi.HttpModels;
 using OzonEdu.MerchApi.Infrastructure.Commands;
+using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
 using OzonEdu.MerchApi.Services.Interfaces;
 
 namespace OzonEdu.MerchApi.Controllers.V1

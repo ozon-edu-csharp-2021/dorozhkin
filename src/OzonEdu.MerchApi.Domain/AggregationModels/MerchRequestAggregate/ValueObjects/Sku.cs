@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.ValueObjects
 {
-    public class Name : ValueObject
+    public class Sku : ValueObject
     {
-        public Name(string name)
+        public long Value { get; }
+        
+        public Sku(long value)
         {
-            Value = name;
+            Value = value;
         }
-
-        public string Value { get; }
         
         protected override IEnumerable<object> GetEqualityComponents()
         {

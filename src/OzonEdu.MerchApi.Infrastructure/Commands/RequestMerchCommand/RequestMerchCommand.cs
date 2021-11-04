@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace OzonEdu.MerchApi.Infrastructure.Commands
+namespace OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand
 {
     public class RequestMerchCommand : IRequest<RequestMerchCommandResponse>
     {

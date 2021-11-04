@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using OzonEdu.MerchApi.Domain.Models;
 
-namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate
+namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects
 {
-    public class Name : ValueObject
+    public class NamePack : ValueObject
     {
         public string Value { get; }
         
-        public Name(string name)
+        public NamePack(string name)
         {
             Value = name;
         }

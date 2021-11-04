@@ -16,11 +16,11 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         Task<MerchRequest> FindByIdAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Найти товарную позицию по складскому идентфикатору
+        /// Найти запрос на мерч по идентфикатору сотрудника
         /// </summary>
-        /// <param name="sku">Складской идентификатор товарной позиции</param>
+        /// <param name="employeeId">Идентификатор сотрудника</param>
         /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
-        /// <returns>Товарная позиция</returns>
-        Task<MerchRequest> FindBySkuAsync(long sku, CancellationToken cancellationToken = default);
+        /// <returns>Запрос на мерч</returns>
+        Task<MerchRequest> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default);
     }
 }
