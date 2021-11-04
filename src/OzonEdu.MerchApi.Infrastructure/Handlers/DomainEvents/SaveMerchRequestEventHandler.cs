@@ -6,9 +6,8 @@ using OzonEdu.MerchApi.Domain.Events.MerchRequestAggregate;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvents
 {
-    public class SaveMerchRequestEventHandler
+    public class SaveMerchRequestEventHandler : INotificationHandler<SaveMerchRequestEvent>
     {
-        //todo add event handler
         private readonly IMerchRequestRepository _merchRequestRepository;
 
         public SaveMerchRequestEventHandler(IMerchRequestRepository merchRequestRepository)

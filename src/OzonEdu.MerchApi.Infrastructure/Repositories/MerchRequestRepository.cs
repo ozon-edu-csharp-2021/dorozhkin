@@ -46,5 +46,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
         {
             return _merchRequests.FirstOrDefault(x => x.EmployeeId == employeeId);
         }
+
+        public async Task<List<MerchRequest>> GetAllRequests(CancellationToken cancellationToken = default)
+        {
+            return _merchRequests;
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities
         {
             var saveMerchPackEvent = new SaveMerchPackEvent(this);
             //todo add event
-            // AddDomainEvent(saveMerchPackEvent);
+            AddDomainEvent(saveMerchPackEvent);
         }
     }
 }

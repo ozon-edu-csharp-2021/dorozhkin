@@ -3,9 +3,8 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 
 namespace OzonEdu.MerchApi.Domain.Events.MerchPackAggregate
 {
-    public class SaveMerchPackEvent 
+    public class SaveMerchPackEvent : INotification
     {
-        //todo add notification
         public SaveMerchPackEvent(MerchPack merchPack)
         {
             MerchPack = merchPack;

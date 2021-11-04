@@ -19,9 +19,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddMediatR(typeof(RequestMerchCommandHandler).Assembly);
-            // services.AddMediatR(typeof(AvailabilityMerchInStockRequestCommandHandler).Assembly);
-            // services.AddMediatR(typeof(ReserveMerchCommandHandler).Assembly);
-            // services.AddMediatR(typeof(SubscribeToSupplyCommandHandler).Assembly);
             
             return services;
         }
