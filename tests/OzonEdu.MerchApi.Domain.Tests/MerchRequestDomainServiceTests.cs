@@ -1,11 +1,9 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using AutoFixture.Xunit2;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.ValueObject;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.ValueObjects;
 using OzonEdu.MerchApi.Domain.DomainServices;
 using Xunit;

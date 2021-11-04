@@ -24,7 +24,11 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// <returns>Запрос на мерч</returns>
         Task<List<MerchRequest>> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default);
         
-        //todo summary
+        /// <summary>
+        /// Найти все запросы на мерч
+        /// </summary>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Все запросы на мерч</returns>
         Task<List<MerchRequest>> GetAllRequestsAsync(CancellationToken cancellationToken = default);
 
     }

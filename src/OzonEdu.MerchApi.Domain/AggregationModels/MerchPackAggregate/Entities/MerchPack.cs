@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.ValueObjects;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.Models;
@@ -21,10 +19,10 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities
         public NamePack NamePack { get; }
         public IReadOnlyList<MerchItem> MerchItems { get; private set; }
 
-        public MerchPack AddMerchItem(NameItem nameItemItem, Sku sku)
+        public MerchPack AddMerchItem(NameItem nameItem, Sku sku)
         {
             var merchItems = MerchItems.ToList();
-            var newMerchItem = new MerchItem(nameItemItem, sku);
+            var newMerchItem = new MerchItem(nameItem, sku);
             merchItems.Add(newMerchItem);
             MerchItems = merchItems;
             
@@ -37,12 +35,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities
         private void SaveMerchPackDomainEvent()
         {
             var saveMerchPackEvent = new SaveMerchPackEvent(this);
-            //todo add event
             AddDomainEvent(saveMerchPackEvent);
-        }
-
-        public MerchPack()
-        {
         }
     }
 }

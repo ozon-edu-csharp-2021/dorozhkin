@@ -4,7 +4,6 @@ using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
-using OzonEdu.MerchApi.Infrastructure.Handlers.StockRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Repositories;
 
 namespace OzonEdu.MerchApi.Infrastructure.Extensions

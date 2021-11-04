@@ -15,7 +15,12 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         /// <returns>Сотрудник</returns>
         Task<Employee> FindByIdAsync(long employeeId, CancellationToken cancellationToken = default);
         
-        //todo summary
+        /// <summary>
+        /// Найти запрос на мерч по имени сотрудника
+        /// </summary>
+        /// <param name="employeeName">Имя сотрудника</param>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Сотрудник</returns>
         Task<Employee> FindByNameAsync(string employeeName, CancellationToken cancellationToken = default);
 
     }

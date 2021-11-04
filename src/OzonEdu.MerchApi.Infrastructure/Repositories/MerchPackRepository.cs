@@ -49,7 +49,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
             return _merchPacks.FirstOrDefault(x => x.Id == merchPackId);
         }
 
-        public Task<MerchItem> CreateMerchItemByIdAsync(MerchItem merchItemToSave,
+        public async Task<MerchItem> CreateMerchItemByIdAsync(MerchItem merchItemToSave,
             CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();

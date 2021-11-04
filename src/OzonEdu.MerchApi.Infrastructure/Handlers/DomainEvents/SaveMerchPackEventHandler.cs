@@ -8,7 +8,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvents
 {
     public class SaveMerchPackEventHandler : INotificationHandler<SaveMerchPackEvent>
     {
-        //todo add event handler
         private readonly IMerchPackRepository _merchPackRepository;
 
         public SaveMerchPackEventHandler(IMerchPackRepository merchPackRepository)

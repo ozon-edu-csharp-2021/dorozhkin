@@ -15,7 +15,12 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
         /// <returns>Набор Мерча</returns>
         Task<MerchPack> FindByIdAsync(long merchPackId, CancellationToken cancellationToken = default);
 
-        //todo add summary
+        /// <summary>
+        /// Создать товар для мерча
+        /// </summary>
+        /// <param name="merchItemToSave">Новый товар для мерча</param>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Товар для мерча</returns>
         Task<MerchItem> CreateMerchItemByIdAsync(MerchItem merchItemToSave,
             CancellationToken cancellationToken = default);
     }

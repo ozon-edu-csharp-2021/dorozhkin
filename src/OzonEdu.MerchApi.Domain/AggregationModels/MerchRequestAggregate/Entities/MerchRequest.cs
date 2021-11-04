@@ -35,7 +35,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
             Status = MerchRequestStatus.Created;
         }
 
-        public void SetInProcessStatus(long reserveCodeStatus) //todo not invariant
+        public void SetInProcessStatus(long reserveCodeStatus)
         {
             if (reserveCodeStatus < 0)
                 throw new Exception("The code cannot be less than zero");

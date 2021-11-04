@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,6 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
 using OzonEdu.MerchApi.Domain.DomainServices;
 using OzonEdu.MerchApi.Infrastructure.Commands.CheckMerchInStockCommand;
-using OzonEdu.MerchApi.Infrastructure.Commands.CreateAvailabilityMerchInStockRequestCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.ReserveMerchInStockCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.SubscribeToSupplyCommand;
@@ -38,7 +36,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         public async Task<RequestMerchCommandResponse> Handle(RequestMerchCommand request,
             CancellationToken cancellationToken)
         {
-            //todo Add exceptions and try/catch
             try
             {
                 var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
@@ -105,7 +102,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             CancellationToken cancellationToken)
         {
             var merchRequestInDb = await _merchRequestRepository.FindByEmployeeIdAsync(employee.Id, cancellationToken);
-            return merchRequestInDb is not null && merchRequestInDb.All(merchRequest => merchRequest.MerchPackId != merchPack.Id);
+            return merchRequestInDb is not null && merchRequestInDb.All(merchRequest => merchRequest.MerchPackId == merchPack.Id);
         }
 
         private async Task<bool> CheckMerchInStockAsync(MerchRequest merchRequest, CancellationToken cancellationToken)

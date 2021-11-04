@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OzonEdu.MerchApi.Domain.Models;
 
@@ -9,6 +10,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObje
         
         public NameItem(string name)
         {
+            if (name == "")
+                throw new Exception("Name is empty!");
+            
             Value = name;
         }
         
