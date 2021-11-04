@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Queries" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
 
 </Project>

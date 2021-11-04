@@ -18,12 +18,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 {
     public class RequestMerchCommandHandler : IRequestHandler<RequestMerchCommand, RequestMerchCommandResponse>
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
         private readonly IMerchRequestRepository _merchRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMerchPackRepository _merchPackRepository;
 
-        public RequestMerchCommandHandler(Mediator mediator, IMerchRequestRepository merchRequestRepository,
+        public RequestMerchCommandHandler(IMediator mediator, IMerchRequestRepository merchRequestRepository,
             IEmployeeRepository employeeRepository, IMerchPackRepository merchPackRepository)
         {
             _mediator = mediator;
@@ -36,38 +36,48 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             CancellationToken cancellationToken)
         {
             //todo Add exceptions and try/catch
-            var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
-            var merchPackInDb = await GetMerchPackInDbAsync(request.MerchPackId, cancellationToken);
-            var isMerchAlreadyIssued =
-                await CheckMerchRequestForThatEmployeeInDbAsync(employeeInDb, merchPackInDb, cancellationToken);
+            try
+            {
+                var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
+                var merchPackInDb = await GetMerchPackInDbAsync(request.MerchPackId, cancellationToken);
+                var isMerchAlreadyIssued =
+                    await CheckMerchRequestForThatEmployeeInDbAsync(employeeInDb, merchPackInDb, cancellationToken);
 
-            if (isMerchAlreadyIssued)
+                if (isMerchAlreadyIssued)
+                    return new RequestMerchCommandResponse
+                    {
+                        Status = $"This merch {request.MerchPackId} has already been issued"
+                    };
+
+
+                var merchRequest = MerchRequestDomainService.CreateMerchRequest(employeeInDb, merchPackInDb);
+                var isMerchInStock = await CheckMerchInStockAsync(merchRequest, cancellationToken);
+
+                if (isMerchInStock)
+                {
+                    var stockResponse = await ReserveMerchInStock(merchRequest, cancellationToken);
+                    merchRequest.SetInProcessStatus(stockResponse.ReserveCodeStatus);
+                }
+                else
+                {
+                    var stockResponse = await SubscribeToSupplyInStock(merchRequest, cancellationToken);
+                    merchRequest.SetWaitingSupplyStatus(stockResponse.SupplyCodeStatus);
+                }
+
+                await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+
                 return new RequestMerchCommandResponse
                 {
-                    Status = $"This merch {request.MerchPackId} has already been issued"
+                    Status = $"Merch request {merchRequest.Id} created. Your status {merchRequest.Status.Name}."
                 };
-
-
-            var merchRequest = MerchRequestDomainService.CreateMerchRequest(employeeInDb, merchPackInDb);
-            var isMerchInStock = await CheckMerchInStockAsync(merchRequest, cancellationToken);
-
-            if (isMerchInStock)
-            {
-                var stockResponse = await ReserveMerchInStock(merchRequest, cancellationToken);
-                merchRequest.SetInProcessStatus(stockResponse.ReserveCodeStatus);
             }
-            else
+            catch (Exception e)
             {
-                var stockResponse = await SubscribeToSupplyInStock(merchRequest, cancellationToken);
-                merchRequest.SetWaitingSupplyStatus(stockResponse.SupplyCodeStatus);
+                return new RequestMerchCommandResponse
+                {
+                    Status = e.Message
+                };
             }
-
-            await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
-            
-            return new RequestMerchCommandResponse
-            {
-                Status = $"Merch request {merchRequest.Id} created. Your status {merchRequest.Status.Name}."
-            };
         }
 
         private async Task<Employee> GetEmployeeInDbAsync(long id, CancellationToken cancellationToken)

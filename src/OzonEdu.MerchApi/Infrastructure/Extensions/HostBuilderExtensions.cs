@@ -20,15 +20,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
                 
-                // services.AddScoped<IMerchPackRepository, MerchPackRepository>();
+                services.AddInfrastructureServices();
+                services.AddInfrastructureRepositories();
                 
                 services.AddSwaggerGen(options =>
                 {
                     options.SwaggerDoc("v1", new OpenApiInfo {Title = "OzonEdu.MerchApi", Version = "v1"});
                     options.CustomSchemaIds(x => x.FullName);
                 });
-
-                services.AddMediatR(typeof(RequestMerchCommandHandler).Assembly);
             });
             return builder;
         }

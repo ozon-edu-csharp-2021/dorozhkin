@@ -19,12 +19,15 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
             var cap = new MerchItem(new NameItem("Cap"), new Sku(444));
             var sweatshirt = new MerchItem(new NameItem("Sweatshirt"), new Sku(555));
 
-            _merchPacks = new List<MerchPack>
-            {
-                (MerchPack) new MerchPack(new NamePack("WelcomePack"), new[] { thirt, socks, pen }).ChangeId(1),
-                (MerchPack) new MerchPack(new NamePack("ConferenceListenerPack"), new[] { thirt, socks, pen, cap }).ChangeId(1),
-                (MerchPack) new MerchPack(new NamePack("VeteranPack"), new[] { thirt, socks, pen, cap, sweatshirt }).ChangeId(1)
-            };
+            var welcomePack = new MerchPack(new NamePack("WelcomePack"), new[] {thirt, socks, pen});
+            var conferenceListenerPack = new MerchPack(new NamePack("ConferenceListenerPack"), new[] {thirt, socks, pen, cap});
+            var veteranPack = new MerchPack(new NamePack("VeteranPack"), new[] {thirt, socks, pen, cap, sweatshirt});
+
+            welcomePack.ChangeId(1);
+            conferenceListenerPack.ChangeId(2);
+            veteranPack.ChangeId(3);
+
+            _merchPacks = new List<MerchPack> {welcomePack, conferenceListenerPack, veteranPack};
         }
 
         private readonly List<MerchPack> _merchPacks;
