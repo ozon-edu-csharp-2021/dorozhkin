@@ -32,8 +32,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
 
         private readonly List<MerchPack> _merchPacks;
 
-        public IUnitOfWork UnitOfWork { get; }
-
         public Task<MerchPack> CreateAsync(MerchPack itemToCreate, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();

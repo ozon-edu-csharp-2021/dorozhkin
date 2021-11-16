@@ -32,7 +32,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
         
         private readonly List<Employee> _employees;
 
-        public IUnitOfWork UnitOfWork { get; }
         public Task<Employee> CreateAsync(Employee itemToCreate, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();

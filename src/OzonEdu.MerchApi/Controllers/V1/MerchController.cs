@@ -21,7 +21,7 @@ namespace OzonEdu.MerchApi.Controllers.V1
         
         [HttpPost("RequestMerch")]
         public async Task<ActionResult<RequestMerchResponse>> RequestMerch(
-            RequestMerchPostViewModel requestMerch, CancellationToken token)
+            RequestMerchRequest requestMerch, CancellationToken token)
         {
             var requestMerchCommand = new RequestMerchCommand
             {

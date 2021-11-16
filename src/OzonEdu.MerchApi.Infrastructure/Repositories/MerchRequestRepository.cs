@@ -23,7 +23,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
 
         private readonly List<MerchRequest> _merchRequests;
 
-        public IUnitOfWork UnitOfWork { get; }
         public async Task<MerchRequest> CreateAsync(MerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
             itemToCreate.ChangeId(_merchRequests[^1].Id + 1);
@@ -45,6 +44,17 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
         public async Task<List<MerchRequest>> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default)
         {
             return _merchRequests.Where(merchRequest => merchRequest.EmployeeId == employeeId).ToList();
+        }
+
+        public async Task<List<MerchRequest>> GetByEmployeeIdWithMerchPackIdAsync(long employeeId, long merchPackId,
+            CancellationToken cancellationToken = default)
+        {
+            var merchRequests = _merchRequests
+                .Where(merchRequest => merchRequest.EmployeeId == employeeId)
+                .Where(merchRequest => merchRequest.MerchPackId == merchPackId)
+                .ToList();
+
+            return merchRequests;
         }
 
         public async Task<List<MerchRequest>> GetAllRequestsAsync(CancellationToken cancellationToken = default)

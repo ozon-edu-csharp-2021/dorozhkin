@@ -40,10 +40,11 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             {
                 var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
                 var merchPackInDb = await GetMerchPackInDbAsync(request.MerchPackId, cancellationToken);
-                var isMerchAlreadyIssued =
-                    await CheckMerchRequestForThatEmployeeInDbAsync(employeeInDb, merchPackInDb, cancellationToken);
+                var merchRequestsAlreadyIssued =
+                    await _merchRequestRepository.GetByEmployeeIdWithMerchPackIdAsync(employeeInDb.Id, merchPackInDb.Id,
+                        cancellationToken);
 
-                if (isMerchAlreadyIssued)
+                if (merchRequestsAlreadyIssued is not null)
                     return new RequestMerchCommandResponse
                     {
                         Status = $"This merch {request.MerchPackId} has already been issued"
@@ -96,13 +97,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                 throw new Exception($"Merch pack with ID {id} was not found");
 
             return merchPackInDb;
-        }
-
-        private async Task<bool> CheckMerchRequestForThatEmployeeInDbAsync(Employee employee, MerchPack merchPack,
-            CancellationToken cancellationToken)
-        {
-            var merchRequestInDb = await _merchRequestRepository.FindByEmployeeIdAsync(employee.Id, cancellationToken);
-            return merchRequestInDb is not null && merchRequestInDb.All(merchRequest => merchRequest.MerchPackId == merchPack.Id);
         }
 
         private async Task<bool> CheckMerchInStockAsync(MerchRequest merchRequest, CancellationToken cancellationToken)
