@@ -1,9 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchApi.HttpModels;
-using OzonEdu.MerchApi.Models;
-using OzonEdu.MerchApi.Services.Interfaces;
+using OzonEdu.MerchApi.Infrastructure.Commands.GetMerchRequestInfoCommand;
+using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
 
 namespace OzonEdu.MerchApi.Controllers.V1
 {
@@ -11,43 +12,47 @@ namespace OzonEdu.MerchApi.Controllers.V1
     [Route("v1/api/merch")]
     public class MerchController : ControllerBase
     {
-        private readonly IMerchService _merchService;
+        private readonly IMediator _mediator;
 
-        public MerchController(IMerchService merchService)
+        public MerchController(IMediator mediator)
         {
-            _merchService = merchService;
+            _mediator = mediator;
         }
-
-        [HttpGet("{id:long}")]
-        public async Task<ActionResult<MerchItemResponse>> RequestMerch(long id, CancellationToken token)
+        
+        [HttpPost("RequestMerch")]
+        public async Task<ActionResult<RequestMerchResponse>> RequestMerch(
+            RequestMerchRequest requestMerch, CancellationToken token)
         {
-            var merchItem = await _merchService.RequestMerch(id, token);
-
-            if (merchItem is null)
-                return NotFound();
-
-            var merchItemResponse = new MerchItemResponse
+            var requestMerchCommand = new RequestMerchCommand
             {
-                MerchName = merchItem.MerchName,
+                EmployeeId = requestMerch.EmployeeId,
+                MerchPackId = requestMerch.MerchPackId
             };
 
-            return Ok(merchItemResponse);
+            var result = await _mediator.Send(requestMerchCommand, token);
+
+            var requestMerchResponse = new RequestMerchResponse
+            {
+                Status = result.Status
+            };
+
+            return Ok(requestMerchResponse);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MerchIssueInfoResponse>> GetMerchIssueInfo(
-            MerchIssuePostViewModel merchIssuePostViewModel, CancellationToken token)
+        [HttpPost("GetMerchIssueInfo")]
+        public async Task<ActionResult<MerchIssueInfoResponse>> RequestMerchIssueInfo(
+            MerchIssuePostViewModel merchIssue, CancellationToken token)
         {
-            var merchIssuesInfo = await _merchService.GetMerchIssuesInfo(new MerchIssueModel
-            (merchIssuePostViewModel.MerchName, merchIssuePostViewModel.EmployeeName), token);
+            var getMerchRequestInfoCommand = new GetMerchRequestInfoCommand
+            {
+                EmployeeName = merchIssue.EmployeeName
+            };
 
-            if (merchIssuesInfo is null)
-                return NotFound();
+            var response = await _mediator.Send(getMerchRequestInfoCommand, token);
 
             var merchIssueInfoResponse = new MerchIssueInfoResponse
             {
-                MerchName = merchIssuesInfo.MerchName,
-                Quantity = merchIssuesInfo.Quantity
+                MerchPacks = response.MerchPacks
             };
 
             return Ok(merchIssueInfoResponse);

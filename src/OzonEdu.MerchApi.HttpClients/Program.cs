@@ -17,7 +17,6 @@ namespace OzonEdu.MerchApi.HttpClients
             var v1RequestMerch = await client.V1RequestMerch(28, CancellationToken.None);
             var v1GetMerchIssueInfo = await client.V1GetMerchIssueInfo(new MerchIssuePostViewModel
             {
-                MerchName = "Tshirt",
                 EmployeeName = "Ivan"
             }, CancellationToken.None);
             ;
