@@ -12,6 +12,16 @@ services:
       - stock-api
       - supply-service
       - employees-service
+      
+  merch-api-db:
+    image: postgres:latest
+    ports:
+    - "5426:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: merchApiPassword
+      POSTGRES_DB: merch-api
+    command: "-c log_statement=all"
         
   emailing-service:
     image: ghcr.io/ozon-edu-csharp-2021/emailing-service:main
