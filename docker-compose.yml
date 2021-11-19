@@ -6,6 +6,8 @@ services:
     hostname: merch-api
     ports:
       - "8080:80"
+    environment:
+      DatabaseConnectionOptions__ConnectionString: "Host=host.docker.internal; Port=5426;Database=merch-api;Username=postgres;Password=merchApiPassword"
     
     depends_on:
       - emailing-service
