@@ -23,6 +23,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
                 
                 services.AddInfrastructureServices();
                 services.AddInfrastructureRepositories();
+                services.AddDatabaseComponents();
                 
                 services.AddSwaggerGen(options =>
                 {

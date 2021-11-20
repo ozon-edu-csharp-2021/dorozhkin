@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -5,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchApi.HttpModels;
 using OzonEdu.MerchApi.Infrastructure.Commands.GetMerchRequestInfoCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
+using MerchIssueInfo = OzonEdu.MerchApi.HttpModels.MerchIssueInfo;
 
 namespace OzonEdu.MerchApi.Controllers.V1
 {
@@ -18,7 +21,7 @@ namespace OzonEdu.MerchApi.Controllers.V1
         {
             _mediator = mediator;
         }
-        
+
         [HttpPost("RequestMerch")]
         public async Task<ActionResult<RequestMerchResponse>> RequestMerch(
             RequestMerchRequest requestMerch, CancellationToken token)
@@ -50,9 +53,16 @@ namespace OzonEdu.MerchApi.Controllers.V1
 
             var response = await _mediator.Send(getMerchRequestInfoCommand, token);
 
+            var merchIssuesInfo = response.MerchIssuesInfo
+                .Select(merchIssueInfo => new MerchIssueInfo
+                {
+                    MerchPack = merchIssueInfo.MerchPack,
+                    Status = merchIssueInfo.Status
+                }).ToList();
+
             var merchIssueInfoResponse = new MerchIssueInfoResponse
             {
-                MerchPacks = response.MerchPacks
+                MerchIssuesInfo = merchIssuesInfo
             };
 
             return Ok(merchIssueInfoResponse);

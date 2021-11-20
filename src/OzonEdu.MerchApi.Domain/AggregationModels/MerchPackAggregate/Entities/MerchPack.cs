@@ -19,6 +19,11 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities
         public NamePack NamePack { get; }
         public IReadOnlyList<MerchItem> MerchItems { get; private set; }
 
+        public void SetId(long id)
+        {
+            Id = id;
+        }
+
         public MerchPack AddMerchItem(NameItem nameItem, Sku sku)
         {
             var merchItems = MerchItems.ToList();

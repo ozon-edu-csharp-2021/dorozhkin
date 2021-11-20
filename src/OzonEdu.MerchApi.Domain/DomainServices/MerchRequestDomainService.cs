@@ -14,7 +14,7 @@ namespace OzonEdu.MerchApi.Domain.DomainServices
                 throw new ArgumentNullException();
             
             var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value).ToList();
-            var merchRequest = new MerchRequest(merchPack.Id, employee.Id, skuList);
+            var merchRequest = new MerchRequest(merchPack.Id, employee.Id);
             
             return merchRequest;
         }

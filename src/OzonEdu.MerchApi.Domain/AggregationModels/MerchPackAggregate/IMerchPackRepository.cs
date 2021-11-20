@@ -27,9 +27,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
         /// <summary>
         /// Найти мерч по идентфикатору
         /// </summary>
-        /// <param name="merchItemId">Идентификатор мерча</param>
+        /// <param name="sku">Идентификатор мерча</param>
         /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
         /// <returns>Мерч</returns>
-        Task<MerchPack> FindMerchItemByIdAsync(long merchItemId, CancellationToken cancellationToken = default);
+        Task<MerchItem> FindMerchItemBySkuAsync(long sku, CancellationToken cancellationToken = default);
     }
 }

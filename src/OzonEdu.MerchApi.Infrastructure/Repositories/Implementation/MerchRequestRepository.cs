@@ -2,29 +2,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using Npgsql;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.ValueObject;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
+using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 {
     public class MerchRequestRepository : IMerchRequestRepository
     {
-        public MerchRequestRepository()
-        {
-            var merchRequest1 = new MerchRequest(1, 1, new long[] {111, 222, 333});
-            var merchRequest2 = new MerchRequest(1, 2, new long[] {111, 222, 333});
-            merchRequest1.ChangeId(1);
-            merchRequest2.ChangeId(2);
-            
-            _merchRequests = new List<MerchRequest> { merchRequest1, merchRequest2 };
-        }
+        private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory;
+        private readonly IChangeTracker _changeTracker;
+        private const int Timeout = 5;   
+        
+        private readonly List<MerchRequest> _merchRequests; //todo remove
 
-        private readonly List<MerchRequest> _merchRequests;
+        public MerchRequestRepository(IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory, IChangeTracker changeTracker)
+        {
+            _dbConnectionFactory = dbConnectionFactory;
+            _changeTracker = changeTracker;
+        }
 
         public async Task<MerchRequest> CreateAsync(MerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
-            itemToCreate.ChangeId(_merchRequests[^1].Id + 1);
             _merchRequests.Add(itemToCreate);
 
             return itemToCreate;
@@ -42,7 +45,48 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
         public async Task<List<MerchRequest>> FindByEmployeeIdAsync(long employeeId, CancellationToken cancellationToken = default)
         {
-            return _merchRequests.Where(merchRequest => merchRequest.EmployeeId == employeeId).ToList();
+            const string sql = @"
+                SELECT id, status_id, merch_pack_id, employee_id, supply_code_id, reserve_code_id, delivery_code_id
+                FROM merch_requests
+                WHERE employee_id = @EmployeeId;";
+            
+            var parameters = new
+            {
+                EmployeeId = employeeId,
+            };
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            var merchRequestModels = await connection.QueryAsync<Models.MerchRequest>(commandDefinition);
+
+            var result = new List<MerchRequest>();
+            
+            foreach (var merchRequestModel in merchRequestModels)
+            {
+                var merchRequest = new MerchRequest(
+                    merchRequestModel.MerchPackId,
+                    merchRequestModel.EmployeeId);
+
+                merchRequest.SetId(merchRequestModel.Id);
+            
+                if (merchRequestModel.SupplyCodeId != null)
+                    merchRequest.SetWaitingSupplyStatus((long) merchRequestModel.SupplyCodeId);
+            
+                if (merchRequestModel.ReserveCodeId is not null)
+                    merchRequest.SetInProcessStatus((long) merchRequestModel.ReserveCodeId);
+            
+                if (merchRequestModel.DeliveryCodeId is not null)
+                    merchRequest.SetClosedStatus((long) merchRequestModel.DeliveryCodeId);
+            
+                _changeTracker.Track(merchRequest);
+                
+                result.Add(merchRequest);
+            }
+            
+            return result;
         }
 
         public async Task<List<MerchRequest>> GetByEmployeeIdWithMerchPackIdAsync(long employeeId, long merchPackId,
