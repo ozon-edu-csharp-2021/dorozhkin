@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.ValueObject;
-using OzonEdu.MerchApi.Domain.Contracts;
 
-namespace OzonEdu.MerchApi.Infrastructure.Repositories
+namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 {
     public class EmployeeRepository : IEmployeeRepository
     {

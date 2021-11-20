@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
-using OzonEdu.MerchApi.Domain.Contracts;
 
-namespace OzonEdu.MerchApi.Infrastructure.Repositories
+namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 {
     public class MerchRequestRepository : IMerchRequestRepository
     {
         public MerchRequestRepository()
         {
-            var merchRequest1 = new MerchRequest(new NamePack("WelcomePack"), 1, 1, new long[] {111, 222, 333});
-            var merchRequest2 = new MerchRequest(new NamePack("WelcomePack"), 1, 2, new long[] {111, 222, 333});
+            var merchRequest1 = new MerchRequest(1, 1, new long[] {111, 222, 333});
+            var merchRequest2 = new MerchRequest(1, 2, new long[] {111, 222, 333});
             merchRequest1.ChangeId(1);
             merchRequest2.ChangeId(2);
             

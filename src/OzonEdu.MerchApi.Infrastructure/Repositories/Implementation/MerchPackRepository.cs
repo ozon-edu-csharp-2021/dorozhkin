@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.ValueObjects;
-using OzonEdu.MerchApi.Domain.Contracts;
 
-namespace OzonEdu.MerchApi.Infrastructure.Repositories
+namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 {
     public class MerchPackRepository : IMerchPackRepository
     {
@@ -49,6 +48,11 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories
 
         public async Task<MerchItem> CreateMerchItemByIdAsync(MerchItem merchItemToSave,
             CancellationToken cancellationToken = default)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<MerchPack> FindMerchItemByIdAsync(long merchItemId, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }

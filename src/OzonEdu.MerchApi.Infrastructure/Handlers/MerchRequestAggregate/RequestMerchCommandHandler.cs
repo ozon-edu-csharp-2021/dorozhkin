@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,9 +102,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
         private async Task<bool> CheckMerchInStockAsync(MerchRequest merchRequest, CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+
             var createAvailabilityMerchInStockRequestCommand = new CheckMerchInStockCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var stockResponse = await _mediator.Send(createAvailabilityMerchInStockRequestCommand, cancellationToken);
 
@@ -113,9 +117,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         private async Task<ReserveMerchInStockCommandResponse> ReserveMerchInStock(MerchRequest merchRequest,
             CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+            
             var reserveMerchInStockCommand = new ReserveMerchInStockCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var response = await _mediator.Send(reserveMerchInStockCommand, cancellationToken);
             return response;
@@ -124,9 +131,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         private async Task<SubscribeToSupplyCommandResponse> SubscribeToSupplyInStock(MerchRequest merchRequest,
             CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+            
             var subscribeToSupplyCommand = new SubscribeToSupplyCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var response = await _mediator.Send(subscribeToSupplyCommand, cancellationToken);
             return response;

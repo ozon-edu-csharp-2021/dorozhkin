@@ -6,6 +6,5 @@ namespace OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand
     {
         public long EmployeeId { get; set; }
         public int MerchPackId { get; set; }
-        // public TestMerchPackEnum MerchPack { get; set; }
     }
 }

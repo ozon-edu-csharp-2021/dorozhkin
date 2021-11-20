@@ -5,6 +5,7 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Repositories;
+using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation;
 
 namespace OzonEdu.MerchApi.Infrastructure.Extensions
 {

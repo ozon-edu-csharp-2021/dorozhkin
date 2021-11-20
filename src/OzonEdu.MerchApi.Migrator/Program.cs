@@ -35,15 +35,11 @@ namespace OzonEdu.MerchApi.Migrator
             using (serviceProvider.CreateScope())
             {
                 var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-                
+
                 if (args.Contains("--dryrun"))
-                {
                     runner.ListMigrations();
-                }
                 else
-                {
                     runner.MigrateUp();
-                }
             }
         }
     }
