@@ -5,6 +5,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Commands.SubscribeToSupplyCommand
 {
     public class SubscribeToSupplyCommand : IRequest<SubscribeToSupplyCommandResponse>
     {
-        public IReadOnlyCollection<long> SkuCollection { get; set; }
+        public IEnumerable<long> SkuCollection { get; set; }
     }
 }

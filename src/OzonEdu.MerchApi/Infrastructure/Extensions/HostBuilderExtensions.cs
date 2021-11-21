@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OzonEdu.MerchApi.Infrastructure.Configuration;
 using OzonEdu.MerchApi.Infrastructure.Filters;
-using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Interceptors;
 using OzonEdu.MerchApi.Infrastructure.StartupFilters;
 
@@ -20,8 +20,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Extensions
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
                 
+                
                 services.AddInfrastructureServices();
                 services.AddInfrastructureRepositories();
+                services.AddDatabaseComponents();
                 
                 services.AddSwaggerGen(options =>
                 {

@@ -16,5 +16,10 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.Entities
         public Name Name { get; }
         public EmailAddress EmailAddress { get; }
         public Phone Phone { get; }
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
     }
 }

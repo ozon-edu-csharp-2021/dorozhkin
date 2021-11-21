@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Commands.GetMerchRequestInfoCommand;
 
@@ -37,17 +35,24 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             if (merchRequests.Count == 0)
                 throw new Exception("Merch requests was not found");
 
-            var merchPacks = new List<MerchPack>();
-            
+            var merchIssuesInfo = new List<MerchIssueInfo>();
+
             foreach (var merchRequest in merchRequests)
             {
                 var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
-                merchPacks.Add(merchPack);
+
+                var merchIssueInfo = new MerchIssueInfo
+                {
+                    MerchPack = merchPack.NamePack.Value,
+                    Status = merchRequest.Status.Name
+                };
+                
+                merchIssuesInfo.Add(merchIssueInfo);
             }
 
             var response = new GetMerchRequestInfoCommandResponse
             {
-                MerchPacks = merchPacks.Select(merchPack => merchPack.NamePack.Value).ToList()
+                MerchIssuesInfo = merchIssuesInfo
             };
 
             return response;

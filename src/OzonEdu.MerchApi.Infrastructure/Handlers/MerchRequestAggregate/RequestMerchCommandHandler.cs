@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
+using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.DomainServices;
 using OzonEdu.MerchApi.Infrastructure.Commands.CheckMerchInStockCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
@@ -20,17 +22,19 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
     public class RequestMerchCommandHandler : IRequestHandler<RequestMerchCommand, RequestMerchCommandResponse>
     {
         private readonly IMediator _mediator;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMerchRequestRepository _merchRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMerchPackRepository _merchPackRepository;
 
         public RequestMerchCommandHandler(IMediator mediator, IMerchRequestRepository merchRequestRepository,
-            IEmployeeRepository employeeRepository, IMerchPackRepository merchPackRepository)
+            IEmployeeRepository employeeRepository, IMerchPackRepository merchPackRepository, IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
             _merchRequestRepository = merchRequestRepository;
             _employeeRepository = employeeRepository;
             _merchPackRepository = merchPackRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<RequestMerchCommandResponse> Handle(RequestMerchCommand request,
@@ -38,13 +42,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         {
             try
             {
+                await _unitOfWork.StartTransaction(cancellationToken);
                 var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
                 var merchPackInDb = await GetMerchPackInDbAsync(request.MerchPackId, cancellationToken);
                 var merchRequestsAlreadyIssued =
                     await _merchRequestRepository.GetByEmployeeIdWithMerchPackIdAsync(employeeInDb.Id, merchPackInDb.Id,
                         cancellationToken);
 
-                if (merchRequestsAlreadyIssued is not null)
+                if (merchRequestsAlreadyIssued.Count != 0)
                     return new RequestMerchCommandResponse
                     {
                         Status = $"This merch {request.MerchPackId} has already been issued"
@@ -65,7 +70,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     merchRequest.SetWaitingSupplyStatus(stockResponse.SupplyCodeStatus);
                 }
 
-                await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+                merchRequest = await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+                
+                // await _unitOfWork.SaveChangesAsync(cancellationToken); //todo Why Exception?
 
                 return new RequestMerchCommandResponse
                 {
@@ -76,7 +83,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             {
                 return new RequestMerchCommandResponse
                 {
-                    Status = e.Message
+                    Status = $"Exception: {e.Message}"
                 };
             }
         }
@@ -101,9 +108,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
         private async Task<bool> CheckMerchInStockAsync(MerchRequest merchRequest, CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+
             var createAvailabilityMerchInStockRequestCommand = new CheckMerchInStockCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var stockResponse = await _mediator.Send(createAvailabilityMerchInStockRequestCommand, cancellationToken);
 
@@ -113,9 +123,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         private async Task<ReserveMerchInStockCommandResponse> ReserveMerchInStock(MerchRequest merchRequest,
             CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+            
             var reserveMerchInStockCommand = new ReserveMerchInStockCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var response = await _mediator.Send(reserveMerchInStockCommand, cancellationToken);
             return response;
@@ -124,9 +137,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         private async Task<SubscribeToSupplyCommandResponse> SubscribeToSupplyInStock(MerchRequest merchRequest,
             CancellationToken cancellationToken)
         {
+            var merchPack = await _merchPackRepository.FindByIdAsync(merchRequest.MerchPackId, cancellationToken);
+            var skuList = merchPack.MerchItems.Select(merchItem => merchItem.Sku.Value);
+            
             var subscribeToSupplyCommand = new SubscribeToSupplyCommand
             {
-                SkuCollection = merchRequest.SkuList
+                SkuCollection = skuList
             };
             var response = await _mediator.Send(subscribeToSupplyCommand, cancellationToken);
             return response;

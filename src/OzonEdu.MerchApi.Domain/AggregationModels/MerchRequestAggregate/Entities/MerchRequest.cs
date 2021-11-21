@@ -12,18 +12,14 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
 {
     public class MerchRequest : Entity, IAggregateRoot
     {
-        public MerchRequest(NamePack namePack, long merchPackId, long employeeId, IReadOnlyCollection<long> skuList)
+        public MerchRequest(long merchPackId, long employeeId)
         {
-            NamePack = namePack;
             MerchPackId = merchPackId;
             EmployeeId = employeeId;
-            SkuList = skuList;
             SetMerchRequestDraftStatus();
         }
 
         public MerchRequestStatus Status { get; private set; }
-        public IReadOnlyCollection<long> SkuList { get; }
-        public NamePack NamePack { get; }
         public long MerchPackId { get; }
         public long EmployeeId { get; }
         public long? SupplyCodeStatus { get; private set; }
@@ -33,6 +29,11 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entiti
         private void SetMerchRequestDraftStatus()
         {
             Status = MerchRequestStatus.Created;
+        }
+
+        public void SetId(long id)
+        {
+            Id = id;
         }
 
         public void SetInProcessStatus(long reserveCodeStatus)

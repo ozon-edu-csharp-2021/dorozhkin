@@ -13,7 +13,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(2, 4565);
         
             //Act
             merchRequest.SetInProcessStatus(3232);
@@ -27,7 +27,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(1, 4565);
         
             //Act && Assert
             Assert.Throws<Exception>(() => merchRequest.SetInProcessStatus(-3232));
@@ -38,7 +38,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(3, 4565);
         
             //Act
             merchRequest.SetWaitingSupplyStatus(3232);
@@ -52,7 +52,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(1, 4565);
         
             //Act && Assert
             Assert.Throws<Exception>(() => merchRequest.SetWaitingSupplyStatus(-3232));
@@ -63,7 +63,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(2, 4565);
         
             //Act
             merchRequest.SetClosedStatus(2324);
@@ -77,7 +77,7 @@ namespace OzonEdu.MerchApi.Domain.Tests
         {
             //Arrange 
             var skuList = new long[] {111, 222, 333};
-            var merchRequest = new MerchRequest(new NamePack("NewPack"), 334, 4565, skuList);
+            var merchRequest = new MerchRequest(1, 4565);
         
             //Act && Assert
             Assert.Throws<Exception>(() => merchRequest.SetClosedStatus(-3232));

@@ -6,6 +6,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Commands.CheckMerchInStockCommand
 {
     public class CheckMerchInStockCommand : IRequest<CheckMerchInStockCommandResponse>
     {
-        public IReadOnlyCollection<long> SkuCollection { get; set; }
+        public IEnumerable<long> SkuCollection { get; set; }
     }
 }

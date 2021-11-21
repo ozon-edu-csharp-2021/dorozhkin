@@ -7,18 +7,11 @@ namespace OzonEdu.MerchApi.Domain.Models
     public abstract class Entity
     {
         int? _requestedHashCode;
-        public virtual int Id { get; protected set; }
+        public virtual long Id { get; protected set; }
         
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
-        //todo temp
-        public Entity ChangeId(int id)
-        {
-            Id = id;
-            return this;
-        }
-        
         public void AddDomainEvent(INotification eventItem)
         {
             _domainEvents ??= new List<INotification>();
