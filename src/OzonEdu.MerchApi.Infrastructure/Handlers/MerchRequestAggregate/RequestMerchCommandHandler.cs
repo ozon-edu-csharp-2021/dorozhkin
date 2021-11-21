@@ -72,7 +72,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
                 merchRequest = await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
                 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                // await _unitOfWork.SaveChangesAsync(cancellationToken); //todo Why Exception?
 
                 return new RequestMerchCommandResponse
                 {
@@ -83,7 +83,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             {
                 return new RequestMerchCommandResponse
                 {
-                    Status = e.Message
+                    Status = $"Exception: {e.Message}"
                 };
             }
         }

@@ -26,13 +26,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
 
             _connection = new NpgsqlConnection(_options.ConnectionString);
             await _connection.OpenAsync(token);
-            // _connection.StateChange += (o, e) =>
-            // { 
-            //     if (e.CurrentState == ConnectionState.Closed)
-            //     {
-            //         _connection = null;
-            //     }
-            // };
+            
+            _connection.StateChange += (o, e) =>
+            { 
+                if (e.CurrentState == ConnectionState.Closed)
+                {
+                    _connection = null;
+                }
+            };
             
             return _connection;
         }

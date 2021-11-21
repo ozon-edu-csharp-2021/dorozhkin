@@ -19,8 +19,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
         private readonly IChangeTracker _changeTracker;
         private const int Timeout = 5;
 
-        private readonly List<MerchPack> _merchPacks; //todo remove
-
         public MerchPackRepository(IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory,
             IChangeTracker changeTracker)
         {

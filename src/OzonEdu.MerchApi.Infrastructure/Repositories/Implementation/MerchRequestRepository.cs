@@ -18,8 +18,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
         private readonly IChangeTracker _changeTracker;
         private const int Timeout = 5;   
         
-        private readonly List<MerchRequest> _merchRequests; //todo remove
-
         public MerchRequestRepository(IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory, IChangeTracker changeTracker)
         {
             _dbConnectionFactory = dbConnectionFactory;
@@ -54,7 +52,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
             var merchRequestModel = await connection.QueryFirstAsync<Models.MerchRequest>(commandDefinition);
 
-            var merchRequest = CreateMerchRequest(merchRequestModel);
+            var merchRequest = CreateMerchRequestEntity(merchRequestModel);
 
             _changeTracker.Track(merchRequest);
             return merchRequest;
@@ -83,7 +81,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
             var merchRequestModel = await connection.QueryFirstAsync<Models.MerchRequest>(commandDefinition);
 
-            var merchRequest = CreateMerchRequest(merchRequestModel);
+            var merchRequest = CreateMerchRequestEntity(merchRequestModel);
 
             _changeTracker.Track(merchRequest);
             return merchRequest;
@@ -117,7 +115,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             
             foreach (var merchRequestModel in merchRequestModels)
             {
-                var merchRequest = CreateMerchRequest(merchRequestModel);
+                var merchRequest = CreateMerchRequestEntity(merchRequestModel);
 
                 _changeTracker.Track(merchRequest);
                 
@@ -153,7 +151,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             
             foreach (var merchRequestModel in merchRequestModels)
             {
-                var merchRequest = CreateMerchRequest(merchRequestModel);
+                var merchRequest = CreateMerchRequestEntity(merchRequestModel);
 
                 _changeTracker.Track(merchRequest);
                 
@@ -181,7 +179,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             
             foreach (var merchRequestModel in merchRequestModels)
             {
-                var merchRequest = CreateMerchRequest(merchRequestModel);
+                var merchRequest = CreateMerchRequestEntity(merchRequestModel);
 
                 _changeTracker.Track(merchRequest);
                 
@@ -191,7 +189,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             return result;
         }
 
-        private MerchRequest CreateMerchRequest(Models.MerchRequest merchRequestModel)
+        private MerchRequest CreateMerchRequestEntity(Models.MerchRequest merchRequestModel)
         {
             var merchRequest = new MerchRequest(
                 merchRequestModel.MerchPackId,
