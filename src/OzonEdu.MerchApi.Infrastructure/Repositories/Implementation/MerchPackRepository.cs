@@ -40,8 +40,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
         public async Task<MerchPack> FindByIdAsync(long merchPackId, CancellationToken cancellationToken = default)
         {
-            // return _merchPacks.FirstOrDefault(x => x.Id == merchPackId);
-
             const string sqlForMerchPack = @"
                 SELECT *
                 FROM merch_packs
@@ -77,12 +75,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 merchItems.Add(merchItem);
             }
             
-            // var merchItemsTask =
-            //     Task.WhenAll(merchPackModel.MerchItemsId.Select(async x =>
-            //         await FindMerchItemByIdAsync(x, cancellationToken)));
-            // var merchItems = merchItemsTask.Result;
-
             var merchPack = new MerchPack(new NamePack(merchPackModel.NamePack), merchItems);
+            merchPack.SetId(merchPackModel.Id);
 
             _changeTracker.Track(merchPack);
             return merchPack;

@@ -53,10 +53,10 @@ namespace OzonEdu.MerchApi.Migrator.Migrations
             Execute.Sql(@"
                 INSERT INTO merch_requests (status_id, merch_pack_id, employee_id, supply_code_id, reserve_code_id, delivery_code_id)
                 VALUES 
-                    (1, 1, 1, 0, 434, 0),
-                    (1, 2, 2, 0, 545, 0),
-                    (2, 3, 3, 343, 234, 0),
-                    (3, 4, 4, 400, 344, 0),
+                    (1, 1, 1, null, 434, null),
+                    (1, 2, 2, null, 545, null),
+                    (2, 3, 3, 343, 234, null),
+                    (3, 4, 4, 400, null, null),
                     (4, 5, 5, 500, 100, 300)
                 ON CONFLICT DO NOTHING
             ");

@@ -31,9 +31,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
         public async ValueTask StartTransaction(CancellationToken token)
         {
             if (_npgsqlTransaction is not null)
-            {
                 return;
-            }
+            
             var connection = await _dbConnectionFactory.CreateConnection(token);
             _npgsqlTransaction = await connection.BeginTransactionAsync(token);
         }
@@ -41,9 +40,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             if (_npgsqlTransaction is null)
-            {
                 throw new Exception("No Active Transaction Started");
-            }
 
             var domainEvents = new Queue<INotification>(
                 _changeTracker.TrackedEntities
@@ -53,11 +50,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
                         x.ClearDomainEvents();
                         return events;
                     }));
-            // Можно отправлять все и сразу через Task.WhenAll.
+            
             while (domainEvents.TryDequeue(out var notification))
-            {
                 await _publisher.Publish(notification, cancellationToken);
-            }
 
             await _npgsqlTransaction.CommitAsync(cancellationToken);
         }

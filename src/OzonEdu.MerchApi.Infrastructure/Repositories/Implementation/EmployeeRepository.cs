@@ -58,6 +58,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 new Name(employeeModel.Name),
                 new EmailAddress(employeeModel.Email),
                 new Phone(employeeModel.Phone));
+            
+            employee.SetId(employeeModel.Id);
 
             _changeTracker.Track(employee);
             return employee;

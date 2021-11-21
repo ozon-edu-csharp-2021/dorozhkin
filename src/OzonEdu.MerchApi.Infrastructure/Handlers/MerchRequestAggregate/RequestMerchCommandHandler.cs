@@ -10,6 +10,7 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Entities;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate.Entities;
+using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.DomainServices;
 using OzonEdu.MerchApi.Infrastructure.Commands.CheckMerchInStockCommand;
 using OzonEdu.MerchApi.Infrastructure.Commands.RequestMerchCommand;
@@ -21,17 +22,19 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
     public class RequestMerchCommandHandler : IRequestHandler<RequestMerchCommand, RequestMerchCommandResponse>
     {
         private readonly IMediator _mediator;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMerchRequestRepository _merchRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMerchPackRepository _merchPackRepository;
 
         public RequestMerchCommandHandler(IMediator mediator, IMerchRequestRepository merchRequestRepository,
-            IEmployeeRepository employeeRepository, IMerchPackRepository merchPackRepository)
+            IEmployeeRepository employeeRepository, IMerchPackRepository merchPackRepository, IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
             _merchRequestRepository = merchRequestRepository;
             _employeeRepository = employeeRepository;
             _merchPackRepository = merchPackRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<RequestMerchCommandResponse> Handle(RequestMerchCommand request,
@@ -39,13 +42,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         {
             try
             {
+                await _unitOfWork.StartTransaction(cancellationToken);
                 var employeeInDb = await GetEmployeeInDbAsync(request.EmployeeId, cancellationToken);
                 var merchPackInDb = await GetMerchPackInDbAsync(request.MerchPackId, cancellationToken);
                 var merchRequestsAlreadyIssued =
                     await _merchRequestRepository.GetByEmployeeIdWithMerchPackIdAsync(employeeInDb.Id, merchPackInDb.Id,
                         cancellationToken);
 
-                if (merchRequestsAlreadyIssued is not null)
+                if (merchRequestsAlreadyIssued.Count != 0)
                     return new RequestMerchCommandResponse
                     {
                         Status = $"This merch {request.MerchPackId} has already been issued"
@@ -66,7 +70,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     merchRequest.SetWaitingSupplyStatus(stockResponse.SupplyCodeStatus);
                 }
 
-                await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+                merchRequest = await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+                
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return new RequestMerchCommandResponse
                 {
